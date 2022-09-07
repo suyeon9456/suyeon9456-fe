@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { myinfo } from '../states';
@@ -21,6 +21,10 @@ const LoginPage: NextPage = () => {
       setMe(data);
       router.push('/');
   }, [id, password, router, setMe]);
+
+  useEffect(() => {
+    if (!!me) router.replace('/');
+  }, [])
 
   return (
     <Form onSubmit={onLogin}>
