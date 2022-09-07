@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { myinfo } from '../states';
+import { myinfoState } from '../states';
 import { useRouter } from 'next/router';
 import { postLogin } from '../fetchData';
 import { LoginResType } from '../types/user';
@@ -11,7 +11,7 @@ import { LoginValidation } from '../types/constant';
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
-  const [me, setMe] = useRecoilState<LoginResType | null>(myinfo);
+  const [me, setMe] = useRecoilState<LoginResType | null>(myinfoState);
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
 
