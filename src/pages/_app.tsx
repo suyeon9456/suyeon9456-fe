@@ -15,9 +15,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Background />
       <Content>
         <RecoilRoot>
-          <Header>
-            <Component {...pageProps} />
-          </Header>
+          <Header/>
+          <Component {...pageProps} />
         </RecoilRoot>
       </Content>
     </>
