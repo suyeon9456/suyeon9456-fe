@@ -32,9 +32,6 @@ const Header = () => {
               <a>login</a>
             </Link>
           )}
-          <Link href='/login' passHref>
-              <a>login</a>
-            </Link>
       </CommonHeader>
   );
 };
