@@ -1,20 +1,21 @@
 import Link from 'next/link';
-import React, { useCallback, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useEffect, useState } from 'react';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { myinfo } from '../states';
+import { myinfoState } from '../states';
 import { LoginResType } from '../types/user';
 
-const Header = ({ children }: { children: React.ReactNode }) => {
-  const [me, setMe] = useRecoilState<LoginResType | null>(myinfo);
-
-  const onLogout = useCallback(() => setMe(null), [setMe]);
+const Header = () => {
+  const [me, setMe] = useState<LoginResType | null>(null);
+  const myinfo = useRecoilValue<LoginResType | null>(myinfoState);
+  const myinfoReset = useResetRecoilState(myinfoState);
 
   useEffect(() => {
-    console.log('me', me);
-  }, [me])
+    if (!myinfo) return;
+    setMe(myinfo);
+  }, [myinfo]);
+
   return (
-    <>
       <CommonHeader>
         <Link href='/'>
           <Title>HAUS</Title>
@@ -23,7 +24,7 @@ const Header = ({ children }: { children: React.ReactNode }) => {
           ? (
             <ButtonWrap>
               <p>{me.user.NAME}</p>
-              <a onClick={onLogout}>logout</a>
+              <a onClick={myinfoReset}>logout</a>
             </ButtonWrap>
           )
           : (
@@ -31,9 +32,10 @@ const Header = ({ children }: { children: React.ReactNode }) => {
               <a>login</a>
             </Link>
           )}
+          <Link href='/login' passHref>
+              <a>login</a>
+            </Link>
       </CommonHeader>
-      {children}
-    </>
   );
 };
 
