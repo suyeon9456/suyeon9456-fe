@@ -3,6 +3,7 @@ import { RecoilRoot } from 'recoil';
 import styled from 'styled-components';
 
 import setupMSW from '../api/setup';
+import Header from '../components/Header';
 import GlobalStyle from '../styles/GlobalStyle';
 
 setupMSW();
@@ -14,7 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Background />
       <Content>
         <RecoilRoot>
-          <Component {...pageProps} />
+          <Header>
+            <Component {...pageProps} />
+          </Header>
         </RecoilRoot>
       </Content>
     </>
