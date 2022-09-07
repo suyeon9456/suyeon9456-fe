@@ -14,3 +14,7 @@ export interface ProductsResType {
   totalCount: number;
 }
 
+export interface ProductReqType {
+  id: string;
+}
+

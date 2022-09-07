@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { ProductsReqType } from '../types/product';
+import { ProductReqType, ProductsReqType } from '../types/product';
 import { LoginReqType, LoginResType } from '../types/user';
 
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -29,6 +29,21 @@ export const getProducts = async ({ page, size }: ProductsReqType) => {
     if (response) {
       throw new Error('test');
       // throw { status: response.status, data: response.data };
+    }
+
+    throw error;
+  }
+};
+
+export const getProduct = async ({ id }: ProductReqType) => {
+  try {
+    const res: AxiosResponse = await axios.get(`/products/${id}`);
+    return res.data.data.product;
+  } catch (error) {
+    const { response } = error as unknown as AxiosError;
+
+    if (response) {
+      throw new Error('test');
     }
 
     throw error;

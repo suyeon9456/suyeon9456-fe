@@ -1,44 +1,53 @@
-import Link from 'next/link';
-import type { NextPage } from 'next';
-import React from 'react';
+import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import products from '../../api/data/products.json';
+import { getProduct } from '../../fetchData';
+import { Product } from '../../types/product';
+import { parsePrice } from '../../utilities';
 
-const ProductDetailPage: NextPage = () => {
-  const product = products[0];
+const ProductDetailPage: NextPage<{ preproduct: Product }> = ({ preproduct }: { preproduct: Product }) => {
+  const router = useRouter();
+  const id = router.query.id
+  const [product, setProduct] = useState<Product | null>(null);
+
+  const onLoadProduct = useCallback(async () => {
+    if (!id) return;
+    const productResData: Product = await getProduct({ id: id as string });
+    setProduct(productResData);
+  }, [id]);
+
+  useEffect(() => {
+    onLoadProduct();
+  }, [id]);
 
   return (
     <>
-      <Header>
-        <Link href='/'>
-          <Title>HAUS</Title>
-        </Link>
-        <Link href='/login'>
-          <p>login</p>
-        </Link>
-      </Header>
-      <Thumbnail src={product.thumbnail ? product.thumbnail : '/defaultThumbnail.jpg'} />
+      <Thumbnail src={product?.thumbnail ? product.thumbnail : '/defaultThumbnail.jpg'} />
       <ProductInfoWrapper>
-        <Name>{product.name}</Name>
-        <Price>{product.price}원</Price>
+        <Name>{product?.name}</Name>
+        <Price>{parsePrice(product?.price ?? 0)}원</Price>
       </ProductInfoWrapper>
     </>
   );
 };
 
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const id = context.query.id;
+  // const product = await getProduct({ id });
+  const product = {};
+  return {
+    props: {
+      preproduct: product,
+    },
+  };
+};
+
 export default ProductDetailPage;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-`;
-
-const Title = styled.a`
-  font-size: 48px;
-`;
 
 const Thumbnail = styled.img`
   width: 100%;
