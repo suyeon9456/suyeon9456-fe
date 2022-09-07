@@ -1,39 +1,54 @@
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import type { NextPage } from 'next';
-import React from 'react';
+import type { GetStaticProps, NextPage } from 'next';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 
-import products from '../api/data/products.json';
+import mockProduct from '../api/data/products.json';
 import ProductList from '../components/ProductList';
 import Pagination from '../components/Pagination';
+import { Product, ProductsResType } from '../types/product';
+import { getProducts } from '../fetchData';
+import { useRecoilValue } from 'recoil';
+import { pageState } from '../states';
 
-const PaginationPage: NextPage = () => {
-  const router = useRouter();
-  const { page } = router.query;
+const PaginationPage: NextPage<{ productInfo: ProductsResType }> = ({ productInfo }: { productInfo: ProductsResType }) => {
+  const page = useRecoilValue<number>(pageState);
+  const [products, setProducts] = useState<Product[]>(productInfo?.products);
+  const [totalCount, setTotalCount] = useState<number>(productInfo?.totalCount);
+
+  const onLoadProducts = useCallback(async () => {
+    if (!page) return;
+    const productsResData: ProductsResType = await getProducts({ page, size: 10 });-
+    setProducts(productsResData.products);
+    setTotalCount(productsResData.totalCount);
+  }, [page]);
+
+  useEffect(() => {
+    onLoadProducts();
+  }, [page]);
 
   return (
     <>
       <Container>
-        <ProductList products={products.slice(0, 10)} />
-        <Pagination />
+        <ProductList products={products} />
+        <Pagination totalCount={totalCount} />
       </Container>
     </>
   );
 };
 
+export const getStaticProps: GetStaticProps = async () => {
+  // const products = await getProducts({ page: 1, size: 10 });
+  // const products = { products: mockProduct.slice(1, 10), totalCount: 105 };
+  const products = { products: [], totalCount: 105 };
+  return {
+    props: {
+      productInfo: products,
+    },
+    revalidate: 10,
+  };
+};
+
 export default PaginationPage;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-`;
-
-const Title = styled.a`
-  font-size: 48px;
-`;
 
 const Container = styled.div`
   display: flex;
