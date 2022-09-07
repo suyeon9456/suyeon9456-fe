@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
 import { Product } from '../types/product';
@@ -7,12 +8,14 @@ type ProductItemProps = {
   product: Product;
 };
 
-const ProductItem = ({ product: { name, thumbnail, price } }: ProductItemProps) => (
-  <Container>
-    <Thumbnail src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
-    <Name>{name}</Name>
-    <Price>{parsePrice(price)}</Price>
-  </Container>
+const ProductItem = ({ product: { id, name, thumbnail, price } }: ProductItemProps) => (
+  <Link href={`/products/${id}`} passHref>
+    <Container>
+      <Thumbnail src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
+      <Name>{name}</Name>
+      <Price>{parsePrice(price)}</Price>
+    </Container>
+  </Link>
 );
 
 export default ProductItem;
