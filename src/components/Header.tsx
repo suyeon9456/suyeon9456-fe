@@ -1,11 +1,14 @@
 import Link from 'next/link';
-import React, { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import React, { useCallback, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { myinfoState } from '../states';
+import { myinfo } from '../states';
+import { LoginResType } from '../types/user';
 
 const Header = ({ children }: { children: React.ReactNode }) => {
-  const me = useRecoilValue(myinfoState);
+  const [me, setMe] = useRecoilState<LoginResType | null>(myinfo);
+
+  const onLogout = useCallback(() => setMe(null), [setMe]);
 
   useEffect(() => {
     console.log('me', me);
@@ -18,14 +21,14 @@ const Header = ({ children }: { children: React.ReactNode }) => {
         </Link>
         {me
           ? (
-            <>
+            <ButtonWrap>
               <p>{me.user.NAME}</p>
-              <p>logout</p>
-            </>
+              <a onClick={onLogout}>logout</a>
+            </ButtonWrap>
           )
           : (
-            <Link href='/login'>
-              <p>login</p>
+            <Link href='/login' passHref>
+              <a>login</a>
             </Link>
           )}
       </CommonHeader>
@@ -45,4 +48,8 @@ const CommonHeader = styled.header`
 
 const Title = styled.a`
   font-size: 48px;
+`;
+
+const ButtonWrap = styled.div`
+  text-align: right;
 `;
