@@ -11,10 +11,12 @@ export const idCheck = (id: string) => {
 
 export const passwordCheck = (password: string) => {
     const regExp = /^[a-zA-Z0-9]{8,30}$/g;
- 
+    if (regExp.test(password)) {
+      return null;
+    }
     return {
-      status: regExp.test(password),
-      message: '올바른 아이디 형식으로 입력해주세요.',
+      status: !regExp.test(password),
+      message: '올바른 비밀번호 형식으로 입력해주세요.',
     };
 };
 
