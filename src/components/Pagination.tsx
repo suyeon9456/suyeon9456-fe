@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
+import usePagination from '../hooks/usePagination';
 
-const Pagination = () => {
+const Pagination = ({ totalCount }: { totalCount: number }) => {
+  const { page, pageNums, goPageNumber, goNextPageNums, goPrevPageNums } = usePagination(totalCount);
   return (
     <Container>
-      <Button disabled>
+      <Button onClick={goPrevPageNums} disabled={Math.ceil(page / 5) === 1}>
         <VscChevronLeft />
       </Button>
       <PageWrapper>
-        {[1, 2, 3, 4, 5].map((page) => (
-          <Page key={page} selected={page === 1} disabled={page === 1}>
-            {page}
+        {!!pageNums && Array.from({ length: (pageNums.end - pageNums.start) + 1 }, (_, i) => i + pageNums.start).map((pageNum) => (
+          <Page 
+            key={pageNum}
+            selected={pageNum === page}
+            disabled={pageNum === page}
+            onClick={() => goPageNumber(pageNum)}
+          >
+            {pageNum}
           </Page>
         ))}
       </PageWrapper>
-      <Button disabled={false}>
+      <Button onClick={goNextPageNums} disabled={page === Math.ceil(totalCount / 10)}>
         <VscChevronRight />
       </Button>
     </Container>

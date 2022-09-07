@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { Product } from '../types/product';
+import { parsePrice } from '../utilities';
 
 type ProductItemProps = {
   product: Product;
@@ -10,7 +11,7 @@ const ProductItem = ({ product: { name, thumbnail, price } }: ProductItemProps) 
   <Container>
     <Thumbnail src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
     <Name>{name}</Name>
-    <Price>{price}</Price>
+    <Price>{parsePrice(price)}</Price>
   </Container>
 );
 
