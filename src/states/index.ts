@@ -9,16 +9,21 @@ const { persistAtom } = recoilPersist({
   storage: sessionStorage
 });
 
-export const myinfo = atom<LoginResType | null>({
+export const myinfoState = atom<LoginResType | null>({
   key: 'myinfo',
   default: null,
   effects_UNSTABLE: [persistAtom],
 });
 
-export const myinfoState = selector({
-  key: 'myinfoState',
-  get: ({ get }) => {
-    const info = get(myinfo);
-    return info;
-  },
+// export const myinfoState = selector({
+//   key: 'myinfoState',
+//   get: ({ get }) => {
+//     const info = get(myinfo);
+//     return info;
+//   },
+// });
+
+export const pageState = atom<number>({
+  key: 'productPage',
+  default: 1,
 });
