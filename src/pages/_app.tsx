@@ -3,7 +3,8 @@ import { RecoilRoot } from 'recoil';
 import styled from 'styled-components';
 
 import setupMSW from '../api/setup';
-import Header from '../components/Header';
+import ErrorBoundary from '../components/common/ErrorBoundary';
+import Header from '../components/common/Header';
 import GlobalStyle from '../styles/GlobalStyle';
 
 setupMSW();
@@ -16,7 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Content>
         <RecoilRoot>
           <Header/>
-          <Component {...pageProps} />
+          <ErrorBoundary>
+            <Component {...pageProps} />
+          </ErrorBoundary>
         </RecoilRoot>
       </Content>
     </>
