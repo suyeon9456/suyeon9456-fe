@@ -6,9 +6,9 @@ import mockProduct from '../api/data/products.json';
 import ProductList from '../components/ProductList';
 import Pagination from '../components/Pagination';
 import { Product, ProductsResType } from '../types/product';
-import { getProducts } from '../fetchData';
 import { useRecoilValue } from 'recoil';
 import { pageState } from '../states';
+import { getProducts } from '../fetchData';
 
 const PaginationPage: NextPage<{ productInfo: ProductsResType }> = ({ productInfo }: { productInfo: ProductsResType }) => {
   const page = useRecoilValue<number>(pageState);
