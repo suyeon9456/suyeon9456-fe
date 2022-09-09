@@ -6,6 +6,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     font: inherit;
     color: inherit;
+    font-family: 'Roboto', sans-serif;
   }
 
   *, :after, :before, ::before, ::after {
@@ -36,6 +37,7 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 0;
     background: none;
     user-select: none;
+    cursor: pointer;
   }
 
   ul, ol {
@@ -44,6 +46,7 @@ const GlobalStyle = createGlobalStyle`
 
   a {
     text-decoration: none;
+    cursor: pointer;
   }
 
   input, img, fieldset, iframe {

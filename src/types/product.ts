@@ -4,3 +4,18 @@ export type Product = {
   thumbnail: string | null;
   price: number;
 }
+
+export interface ProductsReqType {
+  page: number;
+  size: number;
+}
+
+export interface ProductsResType {
+  products: Product[];
+  totalCount: number;
+}
+
+export interface ProductReqType {
+  id: string;
+}
+

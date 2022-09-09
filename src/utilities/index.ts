@@ -11,3 +11,7 @@ export const parseQueryString = (search: string): Record<string, string> =>
 
       return acc;
     }, {} as Record<string, string>);
+
+export const parsePrice = (price: number) => {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};

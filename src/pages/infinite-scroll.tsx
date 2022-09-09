@@ -1,43 +1,63 @@
-import Link from 'next/link';
 import type { NextPage } from 'next';
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import products from '../api/data/products.json';
 import ProductList from '../components/ProductList';
+import useGetInfiniteScrollProducts from '../hooks/useGetInfiniteScrollProducts';
+import useIntersectionObserver from '../hooks/useIntersectionObserver ';
+import { infiniteScrollState } from '../states';
 
 const InfiniteScrollPage: NextPage = () => {
+  const scrollInfo = useRecoilValue(infiniteScrollState);
+  const ScrollReset = useResetRecoilState(infiniteScrollState);
+  const [page, setPage] = useState(1);
+  
+  const onIntersect: IntersectionObserverCallback = (entries) => {
+    const first = entries[0];
+    if (first.isIntersecting) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
+  const { setTarget, isNextGroup, setIsNextGroup } = useIntersectionObserver({ onIntersect });
+
+
+  const [products, setProducts, onLoadProducts] = useGetInfiniteScrollProducts({ page, isNextGroup, setIsNextGroup });
+
+  const onScrollTo = useCallback(() => {
+    const { scrollY } = scrollInfo;
+    window.scrollTo({ left: 0, top: scrollY });
+  }, [scrollInfo]);
+
+  useEffect(() => {
+    const { products } = scrollInfo;
+    if (products.length <= 0) {
+      onLoadProducts();
+    } else {
+      setProducts(products);
+    }
+  }, [page, scrollInfo])
+
+  useEffect(() => {
+    if (scrollInfo.scrollY === 0) return;
+    onScrollTo();
+    ScrollReset();
+  }, [products, scrollInfo]);
+
   return (
-    <>
-      <Header>
-        <Link href='/'>
-          <Title>HAUS</Title>
-        </Link>
-        <Link href='/login'>
-          <p>login</p>
-        </Link>
-      </Header>
-      <Container>
-        <ProductList products={products} />
-      </Container>
-    </>
+    <Container>
+      <ProductList
+        products={products}
+        setTarget={setTarget}
+      />
+    </Container>
   );
 };
 
 export default InfiniteScrollPage;
 
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-`;
-
-const Title = styled.a`
-  font-size: 48px;
-`;
-
-const Container = styled.div`
+const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,7 +1,10 @@
 import type { AppProps } from 'next/app';
+import { RecoilRoot } from 'recoil';
 import styled from 'styled-components';
 
 import setupMSW from '../api/setup';
+import ErrorBoundary from '../components/common/ErrorBoundary';
+import Header from '../components/common/Header';
 import GlobalStyle from '../styles/GlobalStyle';
 
 setupMSW();
@@ -12,7 +15,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GlobalStyle />
       <Background />
       <Content>
-        <Component {...pageProps} />
+        <RecoilRoot>
+          <Header/>
+          {/* <ErrorBoundary> */}
+            <Component {...pageProps} />
+          {/* </ErrorBoundary> */}
+        </RecoilRoot>
       </Content>
     </>
   );

@@ -1,16 +1,21 @@
+import Link from 'next/link';
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import { Product } from '../types/product';
+import { parsePrice } from '../utilities';
 
 type ProductItemProps = {
   product: Product;
+  setTarget?: Dispatch<SetStateAction<HTMLElement | null | undefined>>;
+  onRoute?: () => void;
 };
 
-const ProductItem = ({ product: { name, thumbnail, price } }: ProductItemProps) => (
-  <Container>
+const ProductItem = ({ product: { id, name, thumbnail, price }, setTarget, onRoute }: ProductItemProps) => (
+  <Container ref={setTarget} onClick={onRoute}>
     <Thumbnail src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
     <Name>{name}</Name>
-    <Price>{price}</Price>
+    <Price>{parsePrice(price)}</Price>
   </Container>
 );
 
