@@ -1,7 +1,7 @@
 import React, { useState, useCallback, Dispatch, SetStateAction } from 'react';
 import styled, { css } from 'styled-components';
-import useInput from '../hooks/useInput';
-import { idCheck } from '../utilities/validator';
+import useInput from '../../hooks/useInput';
+import { idCheck } from '../../utilities/validator';
 
 interface InputProps {
   title: string;

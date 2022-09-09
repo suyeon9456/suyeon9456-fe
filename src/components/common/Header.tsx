@@ -2,8 +2,8 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { myinfoState } from '../states';
-import { LoginResType } from '../types/user';
+import { myinfoState } from '../../states';
+import { LoginResType } from '../../types/user';
 
 const Header = () => {
   const [me, setMe] = useState<LoginResType | null>(null);

@@ -6,7 +6,7 @@ import { myinfoState } from '../states';
 import { useRouter } from 'next/router';
 import { postLogin } from '../fetchData';
 import { LoginResType } from '../types/user';
-import Input from '../components/Input';
+import Input from '../components/common/Input';
 import { LoginValidation } from '../types/constant';
 
 const LoginPage: NextPage = () => {
