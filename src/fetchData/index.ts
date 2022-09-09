@@ -27,8 +27,7 @@ export const getProducts = async ({ page, size }: ProductsReqType) => {
     const { response } = error as unknown as AxiosError;
 
     if (response) {
-      throw new Error('test');
-      // throw { status: response.status, data: response.data };
+      throw { status: response.status, data: response.data };
     }
 
     throw error;
@@ -43,7 +42,7 @@ export const getProduct = async ({ id }: ProductReqType) => {
     const { response } = error as unknown as AxiosError;
 
     if (response) {
-      throw new Error('test');
+      return response.status;
     }
 
     throw error;

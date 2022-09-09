@@ -17,9 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Content>
         <RecoilRoot>
           <Header/>
-          <ErrorBoundary>
+          {/* <ErrorBoundary> */}
             <Component {...pageProps} />
-          </ErrorBoundary>
+          {/* </ErrorBoundary> */}
         </RecoilRoot>
       </Content>
     </>

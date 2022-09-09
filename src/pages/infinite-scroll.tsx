@@ -2,18 +2,17 @@ import type { NextPage } from 'next';
 import React, { useState, useCallback, useEffect } from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import ErrorBoundary from '../components/common/ErrorBoundary';
 
 import ProductList from '../components/ProductList';
-import { getProducts } from '../fetchData';
+import useGetInfiniteScrollProducts from '../hooks/useGetInfiniteScrollProducts';
 import useIntersectionObserver from '../hooks/useIntersectionObserver ';
 import { infiniteScrollState } from '../states';
-import { Product, ProductsResType } from '../types/product';
 
 const InfiniteScrollPage: NextPage = () => {
   const scrollInfo = useRecoilValue(infiniteScrollState);
   const ScrollReset = useResetRecoilState(infiniteScrollState);
   const [page, setPage] = useState(1);
-  const [products, setProducts] = useState<Product[]>([]);
   
   const onIntersect: IntersectionObserverCallback = (entries) => {
     const first = entries[0];
@@ -25,14 +24,7 @@ const InfiniteScrollPage: NextPage = () => {
   const { setTarget, isNextGroup, setIsNextGroup } = useIntersectionObserver({ onIntersect });
 
 
-  const onLoadProducts = useCallback(async () => {
-    if (!isNextGroup) return;
-    const { products: data, totalCount }: ProductsResType = await getProducts({ page, size: 16 });
-    if ([...products, ...data].length === totalCount) {
-      setIsNextGroup(false);
-    }
-    setProducts((prev) => [...prev, ...data]);
-  }, [isNextGroup, page, products]);
+  const [products, setProducts, onLoadProducts] = useGetInfiniteScrollProducts({ page, isNextGroup, setIsNextGroup });
 
   const onScrollTo = useCallback(() => {
     const { scrollY } = scrollInfo;
