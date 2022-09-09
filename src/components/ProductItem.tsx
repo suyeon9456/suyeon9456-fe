@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import { Product } from '../types/product';
@@ -6,16 +7,16 @@ import { parsePrice } from '../utilities';
 
 type ProductItemProps = {
   product: Product;
+  setTarget?: Dispatch<SetStateAction<HTMLElement | null | undefined>>;
+  onRoute?: () => void;
 };
 
-const ProductItem = ({ product: { id, name, thumbnail, price } }: ProductItemProps) => (
-  <Link href={`/products/${id}`} passHref>
-    <Container>
-      <Thumbnail src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
-      <Name>{name}</Name>
-      <Price>{parsePrice(price)}</Price>
-    </Container>
-  </Link>
+const ProductItem = ({ product: { id, name, thumbnail, price }, setTarget, onRoute }: ProductItemProps) => (
+  <Container ref={setTarget} onClick={onRoute}>
+    <Thumbnail src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
+    <Name>{name}</Name>
+    <Price>{parsePrice(price)}</Price>
+  </Container>
 );
 
 export default ProductItem;
