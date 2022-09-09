@@ -15,9 +15,7 @@ const useIntersectionObserver = ({ onIntersect }: useIntersectionObserverProps) 
       onIntersect,
       { threshold: 1 }
     );
-    console.log(target);
     if (!isNextGroup) {
-      console.log(isNextGroup)
       observer.disconnect();
     } else {
       observer.observe(target);
