@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ProductReqType, ProductsReqType } from '../types/product';
-import { LoginReqType, LoginResType } from '../types/user';
+import { LoginReqType } from '../types/user';
 
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 

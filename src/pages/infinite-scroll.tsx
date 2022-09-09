@@ -2,7 +2,6 @@ import type { NextPage } from 'next';
 import React, { useState, useCallback, useEffect } from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import ErrorBoundary from '../components/common/ErrorBoundary';
 
 import ProductList from '../components/ProductList';
 import useGetInfiniteScrollProducts from '../hooks/useGetInfiniteScrollProducts';
@@ -45,8 +44,6 @@ const InfiniteScrollPage: NextPage = () => {
     onScrollTo();
     ScrollReset();
   }, [products, scrollInfo]);
-
-
 
   return (
     <Container>
