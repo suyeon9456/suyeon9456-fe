@@ -4,6 +4,7 @@ import {
   Dispatch,
   SetStateAction,
 } from 'react';
+import uniqBy from 'lodash/uniqBy';
 import { getProducts } from '../fetchData';
 import { Product, ProductsResType } from '../types/product';
 
@@ -28,7 +29,12 @@ const useGetInfiniteScrollProducts = ({ page, isNextGroup, setIsNextGroup }: Pro
     if ([...products, ...data].length === totalCount) {
       setIsNextGroup(false);
     }
-    setProducts((prev) => [...prev, ...data]);
+    setProducts((prev) => {
+      if (prev.length > 0) {
+        return uniqBy([...prev, ...data], 'id');
+      }
+      return [...prev, ...data]
+    });
   }, [isNextGroup, page, products]);
 
   return [products, setProducts, onGetProducts];
